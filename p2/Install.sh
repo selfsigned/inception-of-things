@@ -7,12 +7,15 @@ do
 done
 sleep 15
 echo "[$(hostname)] "
+kubectl apply -f /sync/app-1/configmap-1.yaml
 kubectl apply -f /sync/app-1/deployment-1.yaml
 kubectl apply -f /sync/app-1/service-1.yaml
 echo "[$(hostname)] Deploying app-2"
+kubectl apply -f /sync/app-2/configmap-2.yaml
 kubectl apply -f /sync/app-2/deployment-2.yaml
 kubectl apply -f /sync/app-2/service-2.yaml
 echo "[$(hostname)] Deploying app-3"
+kubectl apply -f /sync/app-3/configmap-3.yaml
 kubectl apply -f /sync/app-3/deployment-3.yaml
 kubectl apply -f /sync/app-3/service-3.yaml
 echo "[$(hostname)] Deploying Ingress"

@@ -4,7 +4,7 @@ metadata:
   name: app-3-ingress
 spec:
   rules:
-  - host: app-1.com
+  - host: app1.com
     http:
       paths:
       - path: /
@@ -14,7 +14,7 @@ spec:
             name: app-1-service
             port:
               number: 80
-  - host: app-2.com
+  - host: app2.com
     http:
       paths:
       - path: /

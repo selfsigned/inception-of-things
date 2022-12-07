@@ -5,4 +5,17 @@ while [ ! -e /var/lib/rancher/k3s/server/token ]
 do
     sleep 1
 done
+sleep 15
+echo "[$(hostname)] "
+kubectl apply -f /sync/yaml-1/ingress-1.yaml
+kubectl apply -f /sync/yaml-1/service-1.yaml
+kubectl apply -f /sync/yaml-1/deployment-1.yaml
+echo "[$(hostname)] Deploying app-2"
+kubectl apply -f /sync/yaml-2/ingress-2.yaml
+kubectl apply -f /sync/yaml-2/service-2.yaml
+kubectl apply -f /sync/yaml-2/deployment-2.yaml
+echo "[$(hostname)] Deploying app-3"
+kubectl apply -f /sync/yaml-3/ingress-3.yaml
+kubectl apply -f /sync/yaml-3/service-3.yaml
+kubectl apply -f /sync/yaml-3/deployment-3.yaml
 echo "[$(hostname)] Configured succesfully"

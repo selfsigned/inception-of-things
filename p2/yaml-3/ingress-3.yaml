@@ -4,8 +4,7 @@ metadata:
   name: app-3-ingress
 spec:
   rules:
-  - host: app-3.com
-    http:
+  - http:
       paths:
       - path: /
         pathType: Prefix

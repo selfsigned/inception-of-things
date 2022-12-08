@@ -1,9 +1,11 @@
+VAGRANT_USER=vagrant
 echo "[$(hostname)] Installing Docker"
 apk add --update docker openrc
 service docker start
 echo "[$(hostname)] Installing K3D on controller."
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 k3d cluster create dev-cluster --port 8080:80@loadbalancer --port 8888:8888@loadbalancer --port 8443:443@loadbalancer
+mkdir -p /home/$VAGRANT_USER/.kube && cp /root/.kube/config /home/$VAGRANT_USER/.kube/config && chown $VAGRANT_USER /home/$VAGRANT_USER/.kube/config
 echo "[$(hostname)] Installing Kubectl on controller."
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.25.0/bin/linux/amd64/kubectl
 chmod +x ./kubectl

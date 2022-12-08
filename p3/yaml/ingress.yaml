@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: argocd-ingress
@@ -9,8 +9,11 @@ metadata:
 spec:
   rules:
   - http:
-    paths:
-    -path: /
-      backend:
-        serviceName: argocd-service
-        servicePort: 80
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-service
+            port:
+              number: 80

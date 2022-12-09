@@ -10,7 +10,7 @@ echo "[$(hostname)] Installing Kubectl on controller."
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.25.0/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
-sleep 15
+sleep 10
 
 ####
 
@@ -21,6 +21,7 @@ echo "Apply"
 kubectl create namespace argocd
 kubectl create namespace dev
 kubectl apply -f install.yaml -n argocd
+kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 echo "[$(hostname)] Deploying Ingress"
 kubectl apply -f /sync/yaml/ingress.yaml -n argocd
 echo "[$(hostname)] Deploy wils-application"

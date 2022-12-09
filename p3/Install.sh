@@ -10,12 +10,6 @@ echo "[$(hostname)] Installing Kubectl on controller."
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.25.0/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
-echo "TEST"
-kubectl get jobs -n kube-system 
-kubectl -n kube-system wait --for=condition=complete --timeout=-1s jobs/helm-install-traefik-crd
-kubectl -n kube-system wait --for=condition=complete --timeout=-1s jobs/helm-install-traefik
-kubectl get jobs -n kube-system
-echo "TEST"
 sleep 15
 
 ####

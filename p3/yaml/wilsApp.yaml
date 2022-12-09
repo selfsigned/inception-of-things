@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/Sjorinn/pchambon_argocd.git
     targetRevision: HEAD
-    path: /
+    path: path
 
   destination:
     server: https://kubernetes.default.svc

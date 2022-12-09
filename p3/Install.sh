@@ -10,13 +10,28 @@ echo "[$(hostname)] Installing Kubectl on controller."
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.25.0/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
+echo "TEST"
+kubectl get jobs -n kube-system 
+kubectl -n kube-system wait --for=condition=complete --timeout=-1s jobs/helm-install-traefik-crd
+kubectl -n kube-system wait --for=condition=complete --timeout=-1s jobs/helm-install-traefik
+kubectl get jobs -n kube-system
+echo "TEST"
 sleep 15
+
+####
+
+
 echo "[$(hostname)] Installing ArgoCD"
-kubectl create namespace argocd
-kubectl create namespace dev
 wget https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml -O install.yaml
 echo "Apply"
+kubectl create namespace argocd
+kubectl create namespace dev
 kubectl apply -f install.yaml -n argocd
 echo "[$(hostname)] Deploying Ingress"
-kubectl apply -f /sync/yaml/ingress.yaml
+kubectl apply -f /sync/yaml/ingress.yaml -n argocd
+echo "[$(hostname)] Deploy wils-application"
+kubectl apply -f /sync/yaml/wilsApp.yaml -n argocd 
+echo "[$(hostname)] Wait all pods"
+sudo kubectl wait --for=condition=Ready pods --all -n argocd
+sleep 10
 echo "[$(hostname)] Configured succesfully"

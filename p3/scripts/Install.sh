@@ -23,9 +23,9 @@ kubectl create namespace dev
 kubectl apply -f install.yaml -n argocd
 kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 echo "[$(hostname)] Deploying Ingress"
-kubectl apply -f /sync/yaml/ingress.yaml -n argocd
+kubectl apply -f /sync/confs/ingress.yaml -n argocd
 echo "[$(hostname)] Deploy wils-application"
-kubectl apply -f /sync/yaml/wilsApp.yaml -n argocd 
+kubectl apply -f /sync/confs/wilsApp.yaml -n argocd 
 echo "[$(hostname)] Wait all pods"
 sudo kubectl wait --for=condition=Ready pods --all -n argocd
 sleep 10

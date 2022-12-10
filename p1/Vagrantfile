@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
     pchambonS.vm.box = "generic/alpine317"
     pchambonS.vm.network "private_network", ip: "192.168.56.110"
     pchambonS.vm.synced_folder ".", "/sync"
-    pchambonS.vm.provision "K3S Controller Mode", type: "shell", path: "K3SControllerMode.sh"
+    pchambonS.vm.provision "K3S Controller Mode", type: "shell", path: "./scripts/K3SControllerMode.sh"
     pchambonS.vm.hostname = "pchambonS"
     pchambonS.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     pchambonSW.vm.box = "generic/alpine317"
     pchambonSW.vm.network "private_network", ip: "192.168.56.111"
     pchambonSW.vm.synced_folder ".", "/sync"
-    pchambonSW.vm.provision "K3S Agent Mode", type: "shell", path: "K3SAgentMode.sh"
+    pchambonSW.vm.provision "K3S Agent Mode", type: "shell", path: "./scripts/K3SAgentMode.sh"
     pchambonSW.vm.hostname = "pchambonSW"
     pchambonSW.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]

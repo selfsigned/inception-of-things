@@ -1,0 +1,13 @@
+apiVersion: apps.gitlab.com/v1beta1
+kind: GitLab
+metadata:
+  name: gitlab
+spec:
+  chart:
+    version: "6.6.2" # https://gitlab.com/gitlab-org/cloud-native/gitlab-operator/-/blob/0.8.1/CHART_VERSIONS
+    values:
+      global:
+        hosts:
+          domain: example.com # use a real domain here
+        ingress:
+          configureCertmanager: false

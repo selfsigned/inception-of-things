@@ -36,7 +36,7 @@ kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 
 echo "->Setup ingress"
 kubectl apply -n argocd -f ./confs/ingress-argocd.yaml
-kubectl apply -n argocd -f ./confs/ingress-gitlab.yaml
+kubectl apply -n gitlab -f ./confs/ingress-gitlab.yaml
 
 echo "->Wait for gitlab to be ready"
 sudo kubectl wait --for=condition=available deployments --all -n gitlab

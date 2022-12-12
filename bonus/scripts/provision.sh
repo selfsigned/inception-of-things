@@ -27,6 +27,8 @@ kubectl create namespace gitlab
 helm repo add gitlab https://charts.gitlab.io/
 helm install -n gitlab gitlab gitlab/gitlab \
 	-f ./confs/gitlab-minimum.yaml \
+sudo kubectl wait --for=condition=available deployments --all -n gitlab
+sudo kubectl port-forward svc/gitlab-webservice-default --address 192.168.56.110 -n gitlab 8082:8080 2>&1 >/dev/null &
 
 echo "->Installing AgoCD"
 kubectl create namespace argocd

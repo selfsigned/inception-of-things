@@ -20,9 +20,9 @@ echo "->Installing gitlab:"
 kubectl create namespace gitlab
 helm repo add gitlab https://charts.gitlab.io/
 helm install -n gitlab gitlab gitlab/gitlab \
-	--set nginx-ingress.enabled=false \
-	--set certmanager.install=false \
-	--set global.ingress.configureCertmanager=false
+	--set global.hosts.domain=192.168.56.110.nip.io \
+	--set global.hosts.externalIP=192.168.56.110 \
+	--set certmanager-issuer.email=xperrin@student.42.fr
 
 echo "->Installing AgoCD"
 kubectl create namespace argocd

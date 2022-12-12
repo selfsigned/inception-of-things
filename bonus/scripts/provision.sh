@@ -16,13 +16,17 @@ k3d cluster create bonus \
 	--port 8081:8080@loadbalancer \
 	--port 8888:8888@loadbalancer
 
+if [ -f /etc/alpine-release ]; then
+	VAGRANT_USER=vagrant
+	echo "->Copying k3d credentials to vagrant user"
+	mkdir -p /home/$VAGRANT_USER/.kube && cp /root/.kube/config /home/$VAGRANT_USER/.kube/config && chown $VAGRANT_USER /home/$VAGRANT_USER/.kube/config
+fi
+
 echo "->Installing gitlab:"
 kubectl create namespace gitlab
 helm repo add gitlab https://charts.gitlab.io/
 helm install -n gitlab gitlab gitlab/gitlab \
-	--set global.hosts.domain=192.168.56.110.nip.io \
-	--set global.hosts.externalIP=192.168.56.110 \
-	--set certmanager-issuer.email=xperrin@student.42.fr
+	-f ./confs/gitlab-minimum.yaml \
 
 echo "->Installing AgoCD"
 kubectl create namespace argocd
@@ -31,7 +35,9 @@ curl https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install
 kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 
 echo "->Setup ingress"
-kubectl apply -n gitlab -f ./confs/ingress-gitlab.yaml
 kubectl apply -n argocd -f ./confs/ingress-argocd.yaml
+
+echo "->Wait for gitlab to be ready"
+sudo kubectl wait --for=condition=available deployments --all -n gitlab
 
 echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)

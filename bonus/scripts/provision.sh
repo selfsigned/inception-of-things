@@ -1,3 +1,13 @@
+echo "->Installing Helm and k3d:"
+if [ -f /etc/alpine-release ]; then
+	cd /sync
+	apk add helm docker openrc
+	service docker start
+	curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+	curl -L https://storage.googleapis.com/kubernetes-release/release/v1.25.0/bin/linux/amd64/kubectl > /tmp/kubectl
+	install /tmp/kubectl /usr/local/bin/kubectl
+fi
+
 echo "->creating k3d cluster:"
 k3d cluster create bonus \
 	--port 2222:22@loadbalancer \
@@ -5,11 +15,6 @@ k3d cluster create bonus \
 	--port 8443:443@loadbalancer \
 	--port 8081:8080@loadbalancer \
 	--port 8888:8888@loadbalancer
-
-echo "->Installing Helm:"
-if [ -f /etc/alpine-release ]; then
-	apk add helm	
-fi
 
 echo "->Installing gitlab:"
 kubectl create namespace gitlab

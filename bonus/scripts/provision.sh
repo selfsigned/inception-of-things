@@ -28,3 +28,5 @@ kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 echo "->Setup ingress"
 kubectl apply -n gitlab -f ./confs/ingress-gitlab.yaml
 kubectl apply -n argocd -f ./confs/ingress-argocd.yaml
+
+echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)

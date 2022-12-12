@@ -41,3 +41,5 @@ kubectl apply -n gitlab -f ./confs/ingress-gitlab.yaml
 echo "->Wait for gitlab to be ready"
 sudo kubectl wait --for=condition=available deployments --all -n gitlab
 echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+echo "Gitlab password: " $(kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 -d ; echo)
+

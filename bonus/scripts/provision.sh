@@ -36,9 +36,8 @@ kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 
 echo "->Setup ingress"
 kubectl apply -n argocd -f ./confs/ingress-argocd.yaml
+kubectl apply -n argocd -f ./confs/ingress-gitlab.yaml
 
 echo "->Wait for gitlab to be ready"
 sudo kubectl wait --for=condition=available deployments --all -n gitlab
-sleep 30
-sudo kubectl port-forward svc/gitlab-webservice-default --address 192.168.56.110 -n gitlab 8082:8080 2>&1 >/dev/null &
 echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)

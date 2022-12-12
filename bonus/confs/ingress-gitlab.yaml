@@ -1,7 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cluster-ingress
+  name: gitlab-ingress
+  namespace: gitlab
 spec:
   rules:
   - http:
@@ -12,11 +13,4 @@ spec:
           service:
             name: gitlab-webservice-default
             port:
-              number: 8080
-      - path: /argocd
-        pathType: Prefix
-        backend:
-          service:
-            name: argocd-server
-            port:
-              number: 8080
+              number: 80

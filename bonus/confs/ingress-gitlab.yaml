@@ -14,4 +14,4 @@ spec:
           service:
             name: gitlab-webservice-default
             port:
-              number: 8080
+              number: 8181

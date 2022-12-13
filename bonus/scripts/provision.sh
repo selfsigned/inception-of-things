@@ -38,9 +38,18 @@ kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 echo "->Setup ingress and wilsApps"
 kubectl apply -n argocd -f ./confs/ingress-argocd.yaml
 kubectl apply -n gitlab -f ./confs/ingress-gitlab.yaml
-kubectl apply -n argocd -f ./confs/wilsApp.yaml
 
 echo "->Wait for gitlab to be ready"
 sudo kubectl wait --for=condition=complete -n gitlab --timeout=600s job/gitlab-migrations-1
 echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "Gitlab password: " $(kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 -d ; echo)
+
+echo \
+" ----> Commandes suivantes :
+git clone https://github.com/Sjorinn/pchambon_argocd.git pchambon_argocd
+cd pchambon_argocd
+git remote set-url http://gitlab.192.168.56.110.nip.io:8080/root/pchambon-argocd 
+don't forget to apply wilsapp after creating and updating the repo
+kubectl apply -n argocd -f /sync/confs/wilsApp.yaml
+Argocd password: $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+Gitlab password: $(kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 -d ; echo)" 

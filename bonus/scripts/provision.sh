@@ -30,14 +30,17 @@ helm install -n gitlab gitlab gitlab/gitlab \
 
 echo "->Installing AgoCD"
 kubectl create namespace argocd
+kubectl create namespace dev
 curl https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml | kubectl apply -n argocd -f -
 kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 
 echo "->Setup ingress"
 kubectl apply -n argocd -f ./confs/ingress-argocd.yaml
 kubectl apply -n gitlab -f ./confs/ingress-gitlab.yaml
+kubectl apply -n dev -f ./confs/wilsApp.yaml
 
 echo "->Wait for gitlab to be ready"
 sudo kubectl wait --for=condition=complete -n gitlab --timeout=600s job/gitlab-migrations-1
 echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "Gitlab password: " $(kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 -d ; echo)
+cd /sync/

@@ -30,3 +30,4 @@ echo "[$(hostname)] Wait all pods"
 sudo kubectl wait --for=condition=Ready pods --all -n argocd
 sleep 10
 echo "[$(hostname)] Configured succesfully"
+echo "Argocd password: $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)"

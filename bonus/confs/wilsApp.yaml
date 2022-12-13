@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wil-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: http://gitlab.192.168.56.110.nip.io:8080/root/pchambon_argocd.git
+    targetRevision: HEAD
+    path: path
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

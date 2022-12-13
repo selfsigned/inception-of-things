@@ -44,6 +44,8 @@ sudo kubectl wait --for=condition=complete -n gitlab --timeout=600s job/gitlab-m
 echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "Gitlab password: " $(kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 -d ; echo)
 
+cd /sync
+
 echo \
 " ----> Commandes suivantes :
 git clone https://github.com/Sjorinn/pchambon_argocd.git pchambon_argocd

@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://gitlab.gitlab.192.168.56.110.nip.io/gitlab-instance-eff4a8fe/pchambon_argocd.git
+    repoURL: http://gitlab.192.168.56.110.nip.io:8080/root/pchambon-argocd
     targetRevision: HEAD
     path: path
 

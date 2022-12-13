@@ -35,7 +35,7 @@ kubectl create namespace dev
 curl https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml | kubectl apply -n argocd -f -
 kubectl -n argocd set env deployment/argocd-server ARGOCD_SERVER_INSECURE=true
 
-echo "->Setup ingress"
+echo "->Setup ingress and wilsApps"
 kubectl apply -n argocd -f ./confs/ingress-argocd.yaml
 kubectl apply -n gitlab -f ./confs/ingress-gitlab.yaml
 kubectl apply -n argocd -f ./confs/wilsApp.yaml
@@ -44,17 +44,3 @@ echo "->Wait for gitlab to be ready"
 sudo kubectl wait --for=condition=complete -n gitlab --timeout=600s job/gitlab-migrations-1
 echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "Gitlab password: " $(kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 -d ; echo)
-
-echo "-> Cloning p3 project in /sync"
-cd /sync/
-git clone https://github.com/Sjorinn/pchambon_argocd.git
-mkdir ./local_github
-echo "-> copying file to local gitlab"
-mv ./pchambon_argocd/scripts ./local_github
-mv ./pchambon_argocd/path ./local_github
-cd ./local_github/scripts
-echo "-> Creating repo and pushing to local gitlab"
-git init 
-git add .
-git commit -m "Initial commit"
-git push --set-upstream http://gitlab.gitlab.192.168.56.110.nip.io/gitlab-instance-eff4a8fe/pchambon_argocd.git master

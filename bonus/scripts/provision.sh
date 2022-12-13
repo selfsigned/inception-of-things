@@ -11,10 +11,7 @@ fi
 
 echo "->creating k3d cluster:"
 k3d cluster create bonus \
-	--port 2222:22@loadbalancer \
 	--port 8080:80@loadbalancer \
-	--port 8443:443@loadbalancer \
-	--port 8081:8080@loadbalancer \
 	--port 8888:8888@loadbalancer
 
 if [ -f /etc/alpine-release ]; then
@@ -44,13 +41,12 @@ sudo kubectl wait --for=condition=complete -n gitlab --timeout=600s job/gitlab-m
 echo "Argocd password: " $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "Gitlab password: " $(kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -ojsonpath='{.data.password}' | base64 -d ; echo)
 
-cd /sync
-
 echo \
-" ----> Commandes suivantes :
+" ----> Commandes suivantes : Create first repo with the UI
+cd /sync
 git clone https://github.com/Sjorinn/pchambon_argocd.git pchambon_argocd
 cd pchambon_argocd
-git remote set-url origin http://gitlab.192.168.56.110.nip.io:8080/root/pchambon-argocd 
+git remote set-url origin http://gitlab.192.168.56.110.nip.io:8080/root/pchambon_argocd.git
 ---> don't forget to apply wilsapp after creating and updating the repo
 kubectl apply -n argocd -f /sync/confs/wilsApp.yaml
 Argocd password: $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)

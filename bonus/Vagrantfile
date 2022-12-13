@@ -6,7 +6,6 @@ Vagrant.configure("2") do |config|
     xperrinS.vm.provision "Provisioning script", type: "shell", path: "./scripts/provision.sh"
     xperrinS.vm.hostname = "xperrinS"
     xperrinS.vm.provider "virtualbox" do |vb|
-      config.vm.network "forwarded_port", guest: 22, host: 2222
       config.vm.network "forwarded_port", guest: 8080, host: 8080
       config.vm.network "forwarded_port", guest: 8888, host: 8888
       vb.name = "xperrinS"
